@@ -1,0 +1,32 @@
+{
+  "name": "belarus-army-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot to track military service in Belarus",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "keywords": ["telegram", "bot", "grammyjs", "belarus", "army"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "grammy": "^1.38.3",
+    "dotenv": "^17.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.1",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "eslint": "^9.38.0",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
