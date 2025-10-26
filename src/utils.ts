@@ -1,6 +1,6 @@
-import { ServiceStats, ServiceEvent, MilestoneEvent } from './types';
-import { config, TOTAL_SERVICE_DAYS } from './config';
-import { holidays, milestones } from './events';
+import { ServiceStats, ServiceEvent, MilestoneEvent } from "./types.js";
+import { config, TOTAL_SERVICE_DAYS } from "./config.js";
+import { holidays, milestones } from "./events.js";
 
 /**
  * Get current date in Minsk timezone
@@ -38,7 +38,10 @@ export function getServiceStats(): ServiceStats {
   const now = getCurrentDate();
   const daysPassed = Math.max(0, daysBetween(config.startDate, now));
   const daysLeft = Math.max(0, daysBetween(now, config.endDate));
-  const percentComplete = Math.min(100, (daysPassed / TOTAL_SERVICE_DAYS) * 100);
+  const percentComplete = Math.min(
+    100,
+    (daysPassed / TOTAL_SERVICE_DAYS) * 100
+  );
 
   // Separate events into past and future
   const allEvents = holidays.map((event) => ({
@@ -67,10 +70,13 @@ export function getServiceStats(): ServiceStats {
 /**
  * Generate a progress bar
  */
-export function generateProgressBar(percent: number, length: number = 20): string {
+export function generateProgressBar(
+  percent: number,
+  length: number = 20
+): string {
   const filled = Math.round((percent / 100) * length);
   const empty = length - filled;
-  return '▓'.repeat(filled) + '░'.repeat(empty);
+  return "▓".repeat(filled) + "░".repeat(empty);
 }
 
 /**
@@ -78,18 +84,18 @@ export function generateProgressBar(percent: number, length: number = 20): strin
  */
 export function formatDate(date: Date): string {
   const months = [
-    'января',
-    'февраля',
-    'марта',
-    'апреля',
-    'мая',
-    'июня',
-    'июля',
-    'августа',
-    'сентября',
-    'октября',
-    'ноября',
-    'декабря',
+    "января",
+    "февраля",
+    "марта",
+    "апреля",
+    "мая",
+    "июня",
+    "июля",
+    "августа",
+    "сентября",
+    "октября",
+    "ноября",
+    "декабря",
   ];
 
   const day = date.getDate();
@@ -102,54 +108,99 @@ export function formatDate(date: Date): string {
 /**
  * Get a random funny message based on progress
  */
-export function getRandomFunnyMessage(percentComplete: number): string {
+export function getRandomFunnyMessage(
+  percentComplete: number,
+  isGirlfriend: boolean = false
+): string {
   if (percentComplete < 10) {
-    const messages = [
-      '💪 Только начали! Держись, солдат!',
-      '🎖️ Первые дни - самые сложные!',
-      '🪖 Ты справишься! Мы верим в тебя!',
-      '⚔️ Начало положено! Вперёд к дембелю!',
+    const girlfriendMessages = [
+      "💪 Служба только началась! Поддержи его!",
+      "🎖️ Первые дни самые сложные, но вы справитесь!",
+      "🪖 Он молодец! Напиши ему что-нибудь доброе!",
+      "⚔️ Начало положено! Вы оба сильные!",
     ];
+    const generalMessages = [
+      "💪 Служба только началась! Он держится!",
+      "🎖️ Первые дни - самые сложные, но он справляется!",
+      "🪖 Он молодец! Все верят в него!",
+      "⚔️ Начало положено! Он на верном пути!",
+    ];
+    const messages = isGirlfriend ? girlfriendMessages : generalMessages;
     return messages[Math.floor(Math.random() * messages.length)];
   } else if (percentComplete < 25) {
-    const messages = [
-      '🔥 Втягиваешься! Так держать!',
-      '💪 Уже не новичок!',
-      '🎯 Первая четверть почти позади!',
-      '⭐ Молодец! Продолжай в том же духе!',
+    const girlfriendMessages = [
+      "🔥 Он втягивается! Твоя поддержка помогает!",
+      "💪 Он уже не новичок!",
+      "🎯 Первая четверть почти позади!",
+      "⭐ Он молодец! Продолжай его поддерживать!",
     ];
+    const generalMessages = [
+      "🔥 Он втягивается! Так держать!",
+      "💪 Он уже не новичок!",
+      "🎯 Первая четверть почти позади!",
+      "⭐ Он молодец! Продолжает в том же духе!",
+    ];
+    const messages = isGirlfriend ? girlfriendMessages : generalMessages;
     return messages[Math.floor(Math.random() * messages.length)];
   } else if (percentComplete < 50) {
-    const messages = [
-      '🚀 Уже больше четверти! Летит время!',
-      '🎊 Скоро половина! Терпение!',
-      '💫 Ты уже почти на середине!',
-      '🌟 Отлично идёшь! Половина близко!',
+    const girlfriendMessages = [
+      "🚀 Уже больше четверти! Скоро встретитесь!",
+      "🎊 Скоро половина! Вы справляетесь!",
+      "💫 Он уже почти на середине пути!",
+      "🌟 Отлично! Половина всё ближе!",
     ];
+    const generalMessages = [
+      "🚀 Уже больше четверти! Летит время!",
+      "🎊 Скоро половина! Терпение!",
+      "💫 Он уже почти на середине!",
+      "🌟 Отлично идёт! Половина близко!",
+    ];
+    const messages = isGirlfriend ? girlfriendMessages : generalMessages;
     return messages[Math.floor(Math.random() * messages.length)];
   } else if (percentComplete < 75) {
-    const messages = [
-      '🎉 БОЛЬШЕ ПОЛОВИНЫ! Дальше легче!',
-      '🏆 Большая часть позади!',
-      '🎊 Уже можно мечтать о дембеле!',
-      '💯 Больше половины - это победа!',
+    const girlfriendMessages = [
+      "🎉 БОЛЬШЕ ПОЛОВИНЫ! Встреча всё ближе!",
+      "🏆 Большая часть позади! Держитесь!",
+      "🎊 Уже можно мечтать о встрече!",
+      "💯 Больше половины - вы справляетесь!",
     ];
+    const generalMessages = [
+      "🎉 БОЛЬШЕ ПОЛОВИНЫ! Дальше легче!",
+      "🏆 Большая часть позади!",
+      "🎊 Уже можно мечтать о возвращении!",
+      "💯 Больше половины - это победа!",
+    ];
+    const messages = isGirlfriend ? girlfriendMessages : generalMessages;
     return messages[Math.floor(Math.random() * messages.length)];
   } else if (percentComplete < 90) {
-    const messages = [
-      '🏁 Финишная прямая!',
-      '🎆 Уже совсем скоро дома!',
-      '🎉 Осталось совсем чуть-чуть!',
-      '🔥 Последний рывок! Ты почти дома!',
+    const girlfriendMessages = [
+      "🏁 Финишная прямая! Скоро обнимете друг друга!",
+      "🎆 Уже совсем скоро встретитесь!",
+      "🎉 Осталось совсем чуть-чуть!",
+      "🔥 Последний рывок! Он почти дома!",
     ];
+    const generalMessages = [
+      "🏁 Финишная прямая!",
+      "🎆 Уже совсем скоро он дома!",
+      "🎉 Осталось совсем чуть-чуть!",
+      "🔥 Последний рывок! Он почти дома!",
+    ];
+    const messages = isGirlfriend ? girlfriendMessages : generalMessages;
     return messages[Math.floor(Math.random() * messages.length)];
   } else {
-    const messages = [
-      '🎊 ПОСЛЕДНИЕ ДНИ! Держись!',
-      '🏆 Ты почти свободен!',
-      '🎉 Дембель уже стучится в дверь!',
-      '💪 Последний рывок! Мы ждём тебя!',
+    const girlfriendMessages = [
+      "🎊 ПОСЛЕДНИЕ ДНИ! Совсем скоро увидитесь!",
+      "🏆 Он почти дома! Готовься к встрече!",
+      "🎉 Возвращение уже на пороге!",
+      "💪 Последние дни! Вы так долго ждали этого!",
     ];
+    const generalMessages = [
+      "🎊 ПОСЛЕДНИЕ ДНИ! Он держится!",
+      "🏆 Он почти свободен!",
+      "🎉 Возвращение уже стучится в дверь!",
+      "💪 Последний рывок! Все его ждут!",
+    ];
+    const messages = isGirlfriend ? girlfriendMessages : generalMessages;
     return messages[Math.floor(Math.random() * messages.length)];
   }
 }
@@ -157,7 +208,10 @@ export function getRandomFunnyMessage(percentComplete: number): string {
 /**
  * Format service event for display
  */
-export function formatEvent(event: ServiceEvent, showDate: boolean = true): string {
+export function formatEvent(
+  event: ServiceEvent,
+  showDate: boolean = true
+): string {
   const daysUntil = daysBetween(getCurrentDate(), event.date);
   let text = `${event.emoji} <b>${event.title}</b>`;
 
@@ -168,7 +222,7 @@ export function formatEvent(event: ServiceEvent, showDate: boolean = true): stri
   if (!event.isPast && daysUntil > 0) {
     text += `\n   ⏳ Через ${daysUntil} ${getDayWord(daysUntil)}`;
   } else if (event.isPast) {
-    text += ' ✅';
+    text += " ✅";
   }
 
   if (event.description) {
@@ -186,16 +240,16 @@ export function getDayWord(days: number): string {
   const lastTwoDigits = days % 100;
 
   if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
-    return 'дней';
+    return "дней";
   }
 
   if (lastDigit === 1) {
-    return 'день';
+    return "день";
   }
 
   if (lastDigit >= 2 && lastDigit <= 4) {
-    return 'дня';
+    return "дня";
   }
 
-  return 'дней';
+  return "дней";
 }

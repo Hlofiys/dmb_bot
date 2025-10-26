@@ -1,0 +1,38 @@
+# use the official Bun image
+# see all versions at https://hub.docker.com/r/oven/bun/tags
+FROM oven/bun:alpine AS base
+WORKDIR /usr/src/app
+
+# install dependencies into temp directory
+# this will cache them and speed up future builds
+FROM base AS install
+
+# install with --production (exclude devDependencies)
+RUN mkdir -p /temp/prod
+COPY package.json bun.lock /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile --production
+
+# copy node_modules from temp directory
+# then copy all (non-ignored) project files into the image
+FROM base AS prerelease
+COPY --from=install /temp/prod/node_modules node_modules
+COPY . .
+
+# [optional] tests & build
+ENV NODE_ENV=production
+RUN bun run build
+
+# copy only the bundled application
+FROM base AS release
+COPY --from=prerelease /usr/src/app/dist/index.js .
+
+# Install timezone data in the final image too
+RUN apk add --no-cache tzdata
+
+# Set timezone (optional - can be overridden with TZ env var)
+ENV TZ=Europe/Minsk
+
+# run the app
+USER bun
+EXPOSE 3000/tcp
+ENTRYPOINT [ "bun", "index.js" ]
