@@ -1,6 +1,6 @@
 export const config = {
   // Service dates
-  startDate: new Date("2025-09-29T00:00:00+03:00"), // October 29, 2025
+  startDate: new Date("2025-10-29T00:00:00+03:00"), // October 29, 2025
   endDate: new Date("2026-04-29T00:00:00+03:00"), // April 29, 2026
 
   // Timezone
